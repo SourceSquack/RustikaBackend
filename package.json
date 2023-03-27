@@ -1,0 +1,25 @@
+{
+  "name": "backend-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatoProgramador/backend-test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PatoProgramador/backend-test/issues"
+  },
+  "homepage": "https://github.com/PatoProgramador/backend-test#readme",
+  "dependencies": {
+    "@middy/core": "^4.2.7",
+    "@middy/http-json-body-parser": "^4.2.7",
+    "@middy/http-multipart-body-parser": "^4.2.7",
+    "@middy/http-urlencode-body-parser": "^4.2.7"
+  }
+}

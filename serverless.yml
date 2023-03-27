@@ -1,0 +1,27 @@
+service: aws-lambda-rest-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-west-2
+
+functions:
+  api:
+    handler: src/index.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+  getSize1:
+    handler: src/controllers/sizesController.getSizes
+    events:
+      - httpApi:
+          path: /solution1
+          method: post
+  getSize2:
+    handler: src/controllers/sizesController2.getSizes2
+    events:
+      - httpApi:
+          path: /solution2
+          method: post
