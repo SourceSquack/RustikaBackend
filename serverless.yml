@@ -1,4 +1,4 @@
-service: aws-lambda-rest-api
+service: rustika-api
 frameworkVersion: '3'
 
 plugins:
@@ -8,6 +8,9 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-west-2
+
+environment:
+  MONGO_URI: ${env:MONGO_URI}
 
 functions:
   api:
