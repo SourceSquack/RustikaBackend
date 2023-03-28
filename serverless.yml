@@ -4,13 +4,15 @@ frameworkVersion: '3'
 plugins:
   - serverless-dotenv-plugin
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs18.x
   region: us-west-2
-  
-environment:
-  MONGO_URI: ${env:MONGO_URI}
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+
 functions:
   api:
     handler: src/index.handler
