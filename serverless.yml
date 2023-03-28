@@ -1,6 +1,9 @@
 service: aws-lambda-rest-api
 frameworkVersion: '3'
 
+plugins:
+  - serverless-dotenv-plugin
+
 provider:
   name: aws
   runtime: nodejs18.x
