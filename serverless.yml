@@ -8,10 +8,9 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-west-2
-
+  
 environment:
   MONGO_URI: ${env:MONGO_URI}
-
 functions:
   api:
     handler: src/index.handler
@@ -31,3 +30,9 @@ functions:
       - httpApi:
           path: /solution2
           method: post
+  getOfertas:
+    handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
+    events:
+      - httpApi:
+          path: /ofertas
+          method: get
