@@ -20,6 +20,8 @@
     "@middy/core": "^4.2.7",
     "@middy/http-json-body-parser": "^4.2.7",
     "@middy/http-multipart-body-parser": "^4.2.7",
-    "@middy/http-urlencode-body-parser": "^4.2.7"
+    "@middy/http-urlencode-body-parser": "^4.2.7",
+    "mongoose": "^7.0.3",
+    "mongoose-paginate": "^5.0.3"
   }
 }
