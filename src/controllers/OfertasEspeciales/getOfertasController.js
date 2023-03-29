@@ -3,15 +3,18 @@ const {mongoConect} = require("../../config/db");
 
 const getOfertas = async(event, context)=>{
   mongoConect(process.env.MONGO_URI)
-  const temp = await Offers.find({})
+  try {
+    const allOfers = await Offers.find({})
+      return {
+          statusCode: 200,
+          body: JSON.stringify(allOfers),
+        };
+  } catch (error) {
     return {
-        statusCode: 200,
-        body: JSON.stringify(
-          {
-            message: temp,
-          },
-        ),
-      };
+      statusCode: 400,
+      body: JSON.stringify({ Error: error}),
+    };
+  }
 }
 module.exports = {
     getOfertas

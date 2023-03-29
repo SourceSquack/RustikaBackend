@@ -26,3 +26,21 @@ functions:
       - httpApi:
           path: /ofertas
           method: get
+  postOfertas:
+    handler: src/controllers/OfertasEspeciales/postOfertasController.postOfertas
+    events:
+      - httpApi:
+          path: /ofertas
+          method: post
+  putOfertas:
+    handler: src/controllers/OfertasEspeciales/putOfertasController.putOfertas
+    events:
+      - httpApi:
+          path: /ofertas
+          method: put
+  deleteOfertas:
+    handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
+    events:
+      - httpApi:
+          path: /ofertas
+          method: delete
