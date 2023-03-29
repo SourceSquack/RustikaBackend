@@ -14,23 +14,11 @@ provider:
     MONGO_URI: ${env:MONGO_URI}
 
 functions:
-  api:
-    handler: src/index.handler
+  crateDish:
+    handler: src/controllers/PlatosYBebidas/createDish.createDish
     events:
       - httpApi:
-          path: /
-          method: get
-  getSize1:
-    handler: src/controllers/sizesController.getSizes
-    events:
-      - httpApi:
-          path: /solution1
-          method: post
-  getSize2:
-    handler: src/controllers/sizesController2.getSizes2
-    events:
-      - httpApi:
-          path: /solution2
+          path: /createDish
           method: post
   getOfertas:
     handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
