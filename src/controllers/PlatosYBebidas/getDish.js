@@ -1,7 +1,5 @@
 const { mongoConect } = require("../../config/db");
 const dish = require('../../models/Platos');
-const middy = require("@middy/core");
-const jsonBodyParser = require("@middy/http-json-body-parser");
 
 const getDish = async (event) => {
     const {id} = event.pathParameters;
@@ -21,7 +19,4 @@ const getDish = async (event) => {
     }
 };
 
-module.exports = {
-    getDish: middy(getDish)
-        .use(jsonBodyParser())
-};
+module.exports = {getDish};
