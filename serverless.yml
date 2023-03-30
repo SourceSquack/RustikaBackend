@@ -20,12 +20,24 @@ functions:
       - httpApi:
           path: /platosyBebidas
           method: get
-  crateDish:
+  getDish:
+    handler: src/controllers/PlatosYBebidas/getDish.getDish
+    events:
+      - httpApi:
+          path: /platosyBebidas/{id}
+          method: get
+  createDish:
     handler: src/controllers/PlatosYBebidas/postDish.createDish
     events:
       - httpApi:
           path: /platosyBebidas
           method: post
+  deleteDish:
+    handler: src/controllers/PlatosYBebidas/deleteDish.deleteDish
+    events: 
+      - httpApi:
+          path: /platosyBebidas/{id}
+          method: delete
   getOfertas:
     handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
     events:
