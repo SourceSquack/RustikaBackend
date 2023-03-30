@@ -23,7 +23,7 @@ const getDishes = async (event) => {
         // filteredDishes = filteredDishes.docs
         return {
             statusCode: 200,
-            body: JSON.stringify({filteredDishes})
+            body: JSON.stringify(filteredDishes)
         }
     } catch (error) {
         return {
