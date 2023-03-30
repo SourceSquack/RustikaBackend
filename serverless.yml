@@ -32,6 +32,12 @@ functions:
       - httpApi:
           path: /platosyBebidas
           method: post
+  updateDish:
+    handler: src/controllers/PlatosYBebidas/putDish.updateDish
+    events:
+      - httpApi:
+          path: /platosyBebidas/{id}
+          method: put
   deleteDish:
     handler: src/controllers/PlatosYBebidas/deleteDish.deleteDish
     events: 
