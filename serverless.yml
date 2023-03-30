@@ -1,4 +1,4 @@
-service: aws-lambda-rest-api
+service: rustika-api
 frameworkVersion: '3'
 
 plugins:
@@ -14,24 +14,36 @@ provider:
     MONGO_URI: ${env:MONGO_URI}
 
 functions:
-  api:
-    handler: src/index.handler
+  getDishes:
+    handler: src/controllers/PlatosYBebidas/getDishes.getDishes
     events:
       - httpApi:
-          path: /
+          path: /platosyBebidas
           method: get
-  getSize1:
-    handler: src/controllers/sizesController.getSizes
+  getDish:
+    handler: src/controllers/PlatosYBebidas/getDish.getDish
     events:
       - httpApi:
-          path: /solution1
-          method: post
-  getSize2:
-    handler: src/controllers/sizesController2.getSizes2
+          path: /platosyBebidas/{id}
+          method: get
+  createDish:
+    handler: src/controllers/PlatosYBebidas/postDish.createDish
     events:
       - httpApi:
-          path: /solution2
+          path: /platosyBebidas
           method: post
+  updateDish:
+    handler: src/controllers/PlatosYBebidas/putDish.updateDish
+    events:
+      - httpApi:
+          path: /platosyBebidas/{id}
+          method: put
+  deleteDish:
+    handler: src/controllers/PlatosYBebidas/deleteDish.deleteDish
+    events: 
+      - httpApi:
+          path: /platosyBebidas/{id}
+          method: delete
   getOfertas:
     handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
     events:

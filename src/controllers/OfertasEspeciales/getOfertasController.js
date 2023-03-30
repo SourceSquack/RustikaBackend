@@ -1,5 +1,5 @@
-const Offers = require("../../models/Ofertas")
-const {mongoConect} = require("../../config/db")
+const Offers = require("../../models/Ofertas");
+const {mongoConect} = require("../../config/db");
 
 const getOfertas = async(event, context)=>{
   mongoConect(process.env.MONGO_URI)
