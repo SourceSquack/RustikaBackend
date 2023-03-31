@@ -7,6 +7,12 @@ const multiparDataParser = require("@middy/http-multipart-body-parser");
 
 const deleteOfertas = async (event, context) => {
   mongoConect(process.env.MONGO_URI);
+  const { id } = event.body;
+  if (!id)
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ Error: "No se recibio ningun ID" }),
+    };
   try {
     await Offers.deleteOne({ _id: id });
     return {
