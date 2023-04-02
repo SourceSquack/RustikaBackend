@@ -6,9 +6,9 @@ const jsonBodyParser = require("@middy/http-json-body-parser");
 const createDish = async (event) => {
     if(!event.body) return {
         statusCode: 400,
-        body: JSON.stringify({"Error": "Debes pasar los campos necesarios para crear el plato/bebida"})
+        body: JSON.stringify({"error": "Debes pasar los campos necesarios para crear el plato"})
     };
-    const { name, img, value, description, category, subcategory  } = event.body;
+    const { name, img, units, value, description, category  } = event.body;
     try {
         //conexion con la db
         mongoConect(process.env.MONGO_URI);
@@ -17,14 +17,14 @@ const createDish = async (event) => {
         const validate = {
             name,
             img,
+            units,
             value,
             description,
-            category,
-            subcategory
+            category
         };
         for(const key in validate) {
             const element = validate[key];
-            if (!element) {
+            if (!element && element !== units) {
                 return {
                     statusCode: 400,
                     body: JSON.stringify({
@@ -40,13 +40,13 @@ const createDish = async (event) => {
         return {
             statusCode: 200,
             body: JSON.stringify({
-                "message": "El plato/bebida se ha creado correctamente"
+                "message": "El plato se ha creado correctamente"
             })
         };
     } catch (error) {
         return {
             statusCode: 500,
-            body: JSON.stringify({"Error": error})
+            body: JSON.stringify({"error": error})
         };
     }
 };
