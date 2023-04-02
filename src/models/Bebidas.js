@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 
-const dishSchema = new mongoose.Schema(
+const drinkSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -11,12 +11,12 @@ const dishSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        units: {
-            type: Number
-        },
-        value: {
+        valueUnit: {
             type: Number,
             required: true
+        },
+        valueJug: {
+            type: Number
         },
         description: {
             type: String,
@@ -26,12 +26,16 @@ const dishSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-    }, {
-    versionKey: false,
-    timestamps: true,
+        subCategory: {
+            type: String,
+            required: true
+        }
+    },{
+        type: String,
+        required: true  
     }
 );
 
 dishSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('dish', dishSchema);
+module.exports = mongoose.model('drink', drinkSchema);
