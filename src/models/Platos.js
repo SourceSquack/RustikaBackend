@@ -11,8 +11,11 @@ const dishSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        units: {
+            type: Number
+        },
         value: {
-            type: String,
+            type: Number,
             required: true
         },
         description: {
@@ -23,10 +26,6 @@ const dishSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        subcategory: {
-            type: String,
-            required: true
-        }
     }, {
     versionKey: false,
     timestamps: true,
