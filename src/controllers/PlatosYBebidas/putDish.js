@@ -9,7 +9,7 @@ const updateDish = async (event) => {
         statusCode: 400,
         body: JSON.stringify({"Error": "Debes pasar los campos que deseas actualizar del plato/bebida"})
     };
-    const { name, img, value, description, category, subcategory  } = event.body;
+    const { name, img, units, value, description, category  } = event.body;
     try {
         mongoConect(process.env.MONGO_URI);
         let updatedDish = await dish.updateOne(
@@ -17,10 +17,10 @@ const updateDish = async (event) => {
             {
                 name: name,
                 img: img,
+                units: units,
                 value: value,
                 description: description,
                 category: category,
-                subcategory: subcategory
             }
         );
         if(updatedDish.modifiedCount === 1) {
