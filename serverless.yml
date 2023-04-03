@@ -53,6 +53,12 @@ functions:
       - httpApi:
           path: /bebidas
           method: get
+  getDrink:
+    handler: src/controllers/Bebidas/getDrink.getDrink
+    events:
+      - httpApi:
+          path: /bebidas/{id}
+          method: get
   createDrink:
     handler: src/controllers/Bebidas/postDrink.createDrink
     events:

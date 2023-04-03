@@ -1,15 +1,15 @@
 const { mongoConect } = require("../../config/db");
-const dish = require('../../models/Platos');
+const drink = require('../../models/Bebidas');
 
-const getDish = async (event) => {
+const getDrink = async (event) => {
     const {id} = event.pathParameters;
 
     try {
         mongoConect(process.env.MONGO_URI);
-        let oneDish = await dish.findById(id).exec();
+        let oneDrink = await drink.findById(id).exec();
         return {
             statusCode: 200,
-            body: JSON.stringify(oneDish)
+            body: JSON.stringify(oneDrink)
         }
     } catch (error) {
         return {
@@ -19,4 +19,4 @@ const getDish = async (event) => {
     }
 };
 
-module.exports = {getDish};
+module.exports = {getDrink};
