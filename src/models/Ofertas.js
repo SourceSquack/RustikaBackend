@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate');
 
 const offers = new mongoose.Schema(
     {
@@ -8,11 +7,11 @@ const offers = new mongoose.Schema(
             required: true
         },
         initialDate: {
-            type: String,
+            type: Date,
             required: true
         },
        finalDate: {
-            type: String,
+            type: Date,
             required: true
         }
     }, {
@@ -20,6 +19,5 @@ const offers = new mongoose.Schema(
     timestamps: true,
 }
 );
- offers.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('offers', offers);
