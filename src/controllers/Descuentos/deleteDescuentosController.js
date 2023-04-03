@@ -1,11 +1,9 @@
-const Offers = require("../../models/Ofertas");
+const discounts = require("../../models/Descuentos");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
-const urlencodeParser = require("@middy/http-urlencode-body-parser");
 const jsonBodyParser = require("@middy/http-json-body-parser");
-const multiparDataParser = require("@middy/http-multipart-body-parser");
 
-const deleteOfertas = async (event, context) => {
+const deleteDescuentos = async (event, context) => {
   mongoConect(process.env.MONGO_URI);
   const { id } = event.body;
   if (!id)
@@ -14,7 +12,7 @@ const deleteOfertas = async (event, context) => {
       body: JSON.stringify({ Error: "No se recibio ningun ID" }),
     };
   try {
-    await Offers.deleteOne({ _id: id });
+    await discounts.deleteOne({ _id: id });
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -31,8 +29,5 @@ const deleteOfertas = async (event, context) => {
   }
 };
 module.exports = {
-  deleteOfertas: middy(deleteOfertas)
-    .use(jsonBodyParser())
-    .use(urlencodeParser())
-    .use(multiparDataParser()),
+  deleteDescuentos: middy(deleteDescuentos).use(jsonBodyParser()),
 };

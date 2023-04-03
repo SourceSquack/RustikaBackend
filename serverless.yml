@@ -63,8 +63,32 @@ functions:
           path: /ofertas
           method: put
   deleteOfertas:
-    handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
+    handler: src/controllers/OfertasEspeciales/deleteOfertasController.deleteOfertas
     events:
       - httpApi:
           path: /ofertas
+          method: delete
+  getDescuentos:
+    handler: src/controllers/Descuentos/getDescuentosController.getDescuentos
+    events:
+      - httpApi:
+          path: /descuentos
+          method: get
+  postDescuentos:
+    handler: src/controllers/Descuentos/postDescuentosController.postDescuentos
+    events:
+      - httpApi:
+          path: /descuentos
+          method: post
+  putDescuentos:
+    handler: src/controllers/Descuentos/putDescuentosController.putDescuentos
+    events:
+      - httpApi:
+          path: /descuentos
+          method: put
+  deleteDescuentos:
+    handler: src/controllers/Descuentos/deleteDescuentosController.deleteDescuentos
+    events:
+      - httpApi:
+          path: /descuentos
           method: delete

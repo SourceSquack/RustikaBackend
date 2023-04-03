@@ -1,35 +1,56 @@
-const Offers = require("../../models/Ofertas");
+const discounts = require("../../models/Descuentos");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
-const urlencodeParser = require("@middy/http-urlencode-body-parser");
 const jsonBodyParser = require("@middy/http-json-body-parser");
-const multiparDataParser = require("@middy/http-multipart-body-parser");
 
 Date.prototype.isValid = function () {
   return this.getTime() === this.getTime();
 };
-const putOfertas = async (event, context) => {
+const putDescuentos = async (event, context) => {
   mongoConect(process.env.MONGO_URI);
   if (!event.body || event.body === null || event.body === "")
     return {
       statusCode: 400,
       body: JSON.stringify({ Error: "no body" }),
     };
-  const { id, image, finalDate, initialDate } = event.body;
-  if (!id || (!image && !finalDate && !initialDate))
+  const { id, category, specific, finalDate, initialDate, percentage } = event.body;
+  if (!id || (!category && !specific && !finalDate && !initialDate))
     return {
       statusCode: 400,
-      body: JSON.stringify({ Error: event.body }),
+      body: JSON.stringify({ Error: "faltan datos" }),
     };
   try {
-    const offerToUpdate = await Offers.findById(id).exec();
-    if (offerToUpdate == null)return {
+    const discountToUpdate = await discounts.findById(id).exec();
+    if (discountToUpdate == null)return {
       statusCode: 400,
-      body: JSON.stringify({ Error: "No se encontro una oferta con ese ID" }),
+      body: JSON.stringify({ Error: "No se encontro un descuento con ese ID" }),
     };
-    if (image) {
-      offerToUpdate.image = image;
+    if (percentage){
+      discountToUpdate.percentage = percentage
     }
+    if (category) {
+      if (discountToUpdate.specific) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({
+            Error: "No puedes cambiar el tipo de descuento",
+          }),
+        };
+      }
+      discountToUpdate.category = category;
+    }
+    if (specific) {
+      if (discountToUpdate.category) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({
+            Error: "No puedes cambiar el tipo de descuento",
+          }),
+        };
+      }
+      discountToUpdate.specific = specific;
+    }
+
     if (initialDate && finalDate) {
       const dateObjectInitialDate = new Date(initialDate);
       const dateObjectFinalDate = new Date(finalDate);
@@ -48,13 +69,13 @@ const putOfertas = async (event, context) => {
             Error: "La fecha inicial no puede ser despues de la final",
           }),
         };
-      offerToUpdate.initialDate = initialDate;
-      offerToUpdate.finalDate = finalDate;
+      discountToUpdate.initialDate = initialDate;
+      discountToUpdate.finalDate = finalDate;
     } else {
       if (initialDate) {
         const dateObjectInitialDate = new Date(initialDate);
 
-        if (offerToUpdate.finalDate < dateObjectInitialDate)
+        if (discountToUpdate.finalDate < dateObjectInitialDate)
           return {
             statusCode: 400,
             body: JSON.stringify({
@@ -71,12 +92,12 @@ const putOfertas = async (event, context) => {
             }),
           };
 
-        offerToUpdate.initialDate = initialDate;
+        discountToUpdate.initialDate = initialDate;
       }
       if (finalDate) {
         const dateObjectFinalDate = new Date(finalDate);
 
-        if (offerToUpdate.initialDate > dateObjectFinalDate)
+        if (discountToUpdate.initialDate > dateObjectFinalDate)
           return {
             statusCode: 400,
             body: JSON.stringify({
@@ -93,13 +114,13 @@ const putOfertas = async (event, context) => {
             }),
           };
 
-        offerToUpdate.finalDate = finalDate;
+        discountToUpdate.finalDate = finalDate;
       }
     }
-    await offerToUpdate.save();
+    await discountToUpdate.save();
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Actualizado"}),
+      body: JSON.stringify({ message: "Actualizado" }),
     };
   } catch (error) {
     if (error.name === "CastError")
@@ -110,13 +131,10 @@ const putOfertas = async (event, context) => {
 
     return {
       statusCode: 400,
-      body: JSON.stringify({ Error: error }),
+      body: JSON.stringify({ Error: error.message }),
     };
   }
 };
 module.exports = {
-  putOfertas: middy(putOfertas)
-    .use(jsonBodyParser())
-    .use(urlencodeParser())
-    .use(multiparDataParser()),
+  putDescuentos: middy(putDescuentos).use(jsonBodyParser()),
 };

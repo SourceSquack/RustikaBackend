@@ -1,26 +1,30 @@
-const Offers = require("../../models/Ofertas");
+const discounts = require("../../models/Descuentos");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
 const jsonBodyParser = require("@middy/http-json-body-parser");
-const AWS = require("aws-sdk")
-const s3 = new AWS.S3()
-const fileType = require("file-type")
 
 Date.prototype.isValid = function () {
   return this.getTime() === this.getTime();
 };
-const postOfertas = async (event, context) => {
+const postDescuentos = async (event, context) => {
   mongoConect(process.env.MONGO_URI);
   if (!event.body || event.body === null || event.body === "")
     return {
       statusCode: 400,
       body: JSON.stringify({ Error: "no body" }),
     };
-  const { image, initialDate, finalDate } = event.body;
-  if (!image || !initialDate || !finalDate)
+  const { percentage, category, specific, initialDate, finalDate } = event.body;
+  if ((!category && !specific) || !initialDate || !finalDate || !percentage)
     return {
       statusCode: 400,
       body: JSON.stringify({ Error: "Faltan datos" }),
+    };
+  if (category && specific)
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        Error: "Un descuento no puede ser especifico y por categoria al tiempo",
+      }),
     };
   const dateObjectInitialDate = new Date(initialDate);
   if (!dateObjectInitialDate.isValid())
@@ -48,11 +52,23 @@ const postOfertas = async (event, context) => {
       }),
     };
   try {
-    const newOffer = await Offers.create({
-      image,
-      initialDate: dateObjectInitialDate,
-      finalDate: dateObjectFinalDate,
-    });
+    let newOffer;
+    if (specific) {
+      newOffer = await discounts.create({
+        initialDate: dateObjectInitialDate,
+        finalDate: dateObjectFinalDate,
+        percentage: percentage,
+        specific,
+      });
+    }
+    if (category) {
+      newOffer = await discounts.create({
+        initialDate: dateObjectInitialDate,
+        finalDate: dateObjectFinalDate,
+        percentage : percentage,
+        category,
+      });
+    }
     return {
       statusCode: 200,
       body: JSON.stringify(newOffer),
@@ -65,5 +81,5 @@ const postOfertas = async (event, context) => {
   }
 };
 module.exports = {
-  postOfertas: middy(postOfertas).use(jsonBodyParser()),
+  postDescuentos: middy(postDescuentos).use(jsonBodyParser()),
 };
