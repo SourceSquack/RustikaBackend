@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-offline
 
 useDotenv: true
 
@@ -14,36 +15,69 @@ provider:
     MONGO_URI: ${env:MONGO_URI}
 
 functions:
+########--------------------------------Platos------------------------------ ###########
   getDishes:
-    handler: src/controllers/PlatosYBebidas/getDishes.getDishes
+    handler: src/controllers/Platos/getDishes.getDishes
     events:
       - httpApi:
-          path: /platosyBebidas
+          path: /platos
           method: get
   getDish:
-    handler: src/controllers/PlatosYBebidas/getDish.getDish
+    handler: src/controllers/Platos/getDish.getDish
     events:
       - httpApi:
-          path: /platosyBebidas/{id}
+          path: /platos/{id}
           method: get
   createDish:
-    handler: src/controllers/PlatosYBebidas/postDish.createDish
+    handler: src/controllers/Platos/postDish.createDish
     events:
       - httpApi:
-          path: /platosyBebidas
+          path: /platos
           method: post
   updateDish:
-    handler: src/controllers/PlatosYBebidas/putDish.updateDish
+    handler: src/controllers/Platos/putDish.updateDish
     events:
       - httpApi:
-          path: /platosyBebidas/{id}
+          path: /platos/{id}
           method: put
   deleteDish:
-    handler: src/controllers/PlatosYBebidas/deleteDish.deleteDish
+    handler: src/controllers/Platos/deleteDish.deleteDish
     events: 
       - httpApi:
-          path: /platosyBebidas/{id}
+          path: /platos/{id}
           method: delete
+########--------------------------------Bebidas------------------------------ ###########
+  getDrinks:
+    handler: src/controllers/Bebidas/getDrinks.getDrinks
+    events:
+      - httpApi:
+          path: /bebidas
+          method: get
+  getDrink:
+    handler: src/controllers/Bebidas/getDrink.getDrink
+    events:
+      - httpApi:
+          path: /bebidas/{id}
+          method: get
+  createDrink:
+    handler: src/controllers/Bebidas/postDrink.createDrink
+    events:
+      - httpApi:
+          path: /bebidas
+          method: post
+  updateDrink:
+    handler: src/controllers/Bebidas/putDrink.updateDrink
+    events:
+      - httpApi:
+          path: /bebidas/{id}
+          method: put
+  deleteDrink:
+    handler: src/controllers/Bebidas/deleteDrink.deleteDrink
+    events:
+      - httpApi:
+          path: /bebidas/{id}
+          method: delete
+########--------------------------------Ofertas------------------------------ ###########
   getOfertas:
     handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
     events:
@@ -68,6 +102,7 @@ functions:
       - httpApi:
           path: /ofertas
           method: delete
+########--------------------------------Descuentos------------------------------ ###########
   getDescuentos:
     handler: src/controllers/Descuentos/getDescuentosController.getDescuentos
     events:

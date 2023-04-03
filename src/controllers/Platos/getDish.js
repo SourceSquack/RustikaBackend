@@ -9,12 +9,12 @@ const getDish = async (event) => {
         let oneDish = await dish.findById(id).exec();
         return {
             statusCode: 200,
-            body: JSON.stringify(oneDish, id)
+            body: JSON.stringify(oneDish)
         }
     } catch (error) {
         return {
             statusCode: 500,
-            body: JSON.stringify({ "Error": error })
+            body: JSON.stringify({ "error": error })
         };
     }
 };

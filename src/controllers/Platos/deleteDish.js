@@ -9,12 +9,12 @@ const deleteDish = async (event) => {
         if (dishdelete.deletedCount === 1) {
             return {
                 statusCode: 200,
-                body: JSON.stringify({"message": "El plato/bebida se eliminó correctamente"})
+                body: JSON.stringify({"message": "El plato se eliminó correctamente"})
             }
         } else {
             return {
                 statusCode: 400,
-                body: JSON.stringify({"error": "Ocurrió un error eliminando el plato/bebida"})
+                body: JSON.stringify({"error": "Ocurrió un error eliminando el plato"})
             }
         }
 
