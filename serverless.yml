@@ -65,6 +65,12 @@ functions:
       - httpApi:
           path: /bebidas
           method: post
+  updateDrink:
+    handler: src/controllers/Bebidas/putDrink.updateDrink
+    events:
+      - httpApi:
+          path: /bebidas/{id}
+          method: put
 ########--------------------------------Ofertas------------------------------ ###########
   getOfertas:
     handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
