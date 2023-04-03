@@ -3,6 +3,7 @@ frameworkVersion: '3'
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-offline
 
 useDotenv: true
 
@@ -16,37 +17,42 @@ provider:
 functions:
 ######## Platos ###########
   getDishes:
-    handler: src/controllers/PlatosYBebidas/getDishes.getDishes
+    handler: src/controllers/Platos/getDishes.getDishes
     events:
       - httpApi:
-          path: /platosyBebidas
+          path: /platos
           method: get
   getDish:
-    handler: src/controllers/PlatosYBebidas/getDish.getDish
+    handler: src/controllers/Platos/getDish.getDish
     events:
       - httpApi:
-          path: /platosyBebidas/{id}
+          path: /platos/{id}
           method: get
   createDish:
-    handler: src/controllers/PlatosYBebidas/postDish.createDish
+    handler: src/controllers/Platos/postDish.createDish
     events:
       - httpApi:
-          path: /platosyBebidas
+          path: /platos
           method: post
   updateDish:
-    handler: src/controllers/PlatosYBebidas/putDish.updateDish
+    handler: src/controllers/Platos/putDish.updateDish
     events:
       - httpApi:
-          path: /platosyBebidas/{id}
+          path: /platos/{id}
           method: put
   deleteDish:
-    handler: src/controllers/PlatosYBebidas/deleteDish.deleteDish
+    handler: src/controllers/Platos/deleteDish.deleteDish
     events: 
       - httpApi:
-          path: /platosyBebidas/{id}
+          path: /platos/{id}
           method: delete
 ######## Bebidas ###########
-
+  createDrink:
+    handler: src/controllers/Bebidas/postDrink.createDrink
+    events:
+      - httpApi:
+          path: /bebidas
+          method: post
 ######## Ofertas ###########
   getOfertas:
     handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas

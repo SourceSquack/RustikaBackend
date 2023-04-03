@@ -20,11 +20,11 @@ const createDish = async (event) => {
             units,
             value,
             description,
-            category
+            category,
         };
         for(const key in validate) {
             const element = validate[key];
-            if (!element && element !== units) {
+            if (!element && key !== "units") {
                 return {
                     statusCode: 400,
                     body: JSON.stringify({

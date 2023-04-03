@@ -26,6 +26,7 @@
     "mongoose-paginate": "^5.0.3"
   },
   "devDependencies": {
-    "serverless-dotenv-plugin": "^6.0.0"
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-offline": "^12.0.4"
   }
 }

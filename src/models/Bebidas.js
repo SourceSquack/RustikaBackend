@@ -36,6 +36,6 @@ const drinkSchema = new mongoose.Schema(
     }
 );
 
-dishSchema.plugin(mongoosePaginate);
+drinkSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('drink', drinkSchema);
