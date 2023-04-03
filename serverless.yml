@@ -15,7 +15,7 @@ provider:
     MONGO_URI: ${env:MONGO_URI}
 
 functions:
-######## Platos ###########
+########--------------------------------Platos------------------------------ ###########
   getDishes:
     handler: src/controllers/Platos/getDishes.getDishes
     events:
@@ -46,14 +46,20 @@ functions:
       - httpApi:
           path: /platos/{id}
           method: delete
-######## Bebidas ###########
+########--------------------------------Bebidas------------------------------ ###########
+  getDrinks:
+    handler: src/controllers/Bebidas/getDrinks.getDrinks
+    events:
+      - httpApi:
+          path: /bebidas
+          method: get
   createDrink:
     handler: src/controllers/Bebidas/postDrink.createDrink
     events:
       - httpApi:
           path: /bebidas
           method: post
-######## Ofertas ###########
+########--------------------------------Ofertas------------------------------ ###########
   getOfertas:
     handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas
     events:
@@ -78,6 +84,7 @@ functions:
       - httpApi:
           path: /ofertas
           method: delete
+########--------------------------------Descuentos------------------------------ ###########
   getDescuentos:
     handler: src/controllers/Descuentos/getDescuentosController.getDescuentos
     events:

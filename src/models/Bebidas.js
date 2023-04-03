@@ -31,8 +31,8 @@ const drinkSchema = new mongoose.Schema(
             required: true
         }
     },{
-        type: String,
-        required: true  
+        versionKey: false,
+        timestamps: true,
     }
 );
 

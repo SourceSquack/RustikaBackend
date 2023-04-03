@@ -1,7 +1,6 @@
 const { mongoConect } = require("../../config/db");
 const dish = require('../../models/Platos');
 
-
 const getDishes = async (event) => {
     let options = {
         page: 1,
