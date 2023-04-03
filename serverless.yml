@@ -71,6 +71,12 @@ functions:
       - httpApi:
           path: /bebidas/{id}
           method: put
+  deleteDrink:
+    handler: src/controllers/Bebidas/deleteDrink.deleteDrink
+    events:
+      - httpApi:
+          path: /bebidas/{id}
+          method: delete
 ########--------------------------------Ofertas------------------------------ ###########
   getOfertas:
     handler: src/controllers/OfertasEspeciales/getOfertasController.getOfertas

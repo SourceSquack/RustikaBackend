@@ -1,20 +1,20 @@
 const { mongoConect } = require("../../config/db");
-const dish = require('../../models/Platos');
+const drink = require('../../models/Bebidas');
 
-const deleteDish = async (event) => {
+const deleteDrink = async (event) => {
     const {id} = event.pathParameters
     try {
         mongoConect(process.env.MONGO_URI);
-        let dishdelete = await dish.deleteOne({_id: id});
-        if (dishdelete.deletedCount === 1) {
+        let drinkDelete = await drink.deleteOne({_id: id});
+        if (drinkDelete.deletedCount === 1) {
             return {
                 statusCode: 200,
-                body: JSON.stringify({"message": "El plato se eliminó correctamente"})
+                body: JSON.stringify({"message": "La bebida se eliminó correctamente"})
             }
         } else {
             return {
                 statusCode: 400,
-                body: JSON.stringify({"error": "Ocurrió un error eliminando el plato"})
+                body: JSON.stringify({"error": "Ocurrió un error eliminando la bebida"})
             }
         }
 
@@ -27,4 +27,4 @@ const deleteDish = async (event) => {
 
 };
 
-module.exports = {deleteDish}
+module.exports = {deleteDrink}
