@@ -11,6 +11,9 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-west-2
+  apiGateway:
+    binaryMediaTypes:
+      - 'multipart/form-data'
   environment:
     MONGO_URI: ${env:MONGO_URI}
 
@@ -127,3 +130,10 @@ functions:
       - httpApi:
           path: /descuentos
           method: delete
+########--------------------------------Testing------------------------------ ###########
+  postImages:
+    handler: src/controllers/uploadTest.postTestImage
+    events:
+      - httpApi:
+          path: /test
+          method: post
