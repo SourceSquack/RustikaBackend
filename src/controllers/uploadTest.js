@@ -14,8 +14,9 @@ const uploadFile = (filename, data, contentType) => {
   console.log('Subiendo...');
   return new Promise((resolve, reject) => {
     const params = {
-      key: filename,
-      body: Buffer.from(data, 'base64'),
+      Bucket: process.env.BUCKET_NAME,
+      Key: filename,
+      Body: Buffer.from(data, 'base64'),
       ContentEncoding: 'base64',
       ContentType: contentType
     }
@@ -25,7 +26,7 @@ const uploadFile = (filename, data, contentType) => {
           reject(s3Err)
         }
         console.log('Se subio correctamente');
-        resolve(`${data.location}`)
+        resolve(data)
     });
   });
 }
@@ -33,7 +34,7 @@ const uploadFile = (filename, data, contentType) => {
 const postTestImage = async (event, context) => {
   const request = event.body;
   const file = request.images;
-  let upladedInfo = uploadFile(file.filename, file.content.data, "image/jpeg");
+  let upladedInfo = await uploadFile(file.filename, file.content, "image/jpeg");
 
 
   // await s3.createBucket(async function () {
@@ -56,8 +57,8 @@ const postTestImage = async (event, context) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      response: upladedInfo, file,
-    }),
+      response: upladedInfo
+    })
   };
 };
 module.exports = {
