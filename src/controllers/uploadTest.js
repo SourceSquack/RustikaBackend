@@ -7,34 +7,56 @@ const s3 = new AWS.S3({
   accessKeyId: process.env.NEW_AWS_ACCESS_KEY,
   secretAccessKey: process.env.NEW_AWS_SECRET_ACCESS_KEY,
   Bucket: process.env.BUCKET_NAME,
+  ACL:'public-read'
 });
+
+const uploadFile = (filename, data, contentType) => {
+  console.log('Subiendo...');
+  return new Promise((resolve, reject) => {
+    const params = {
+      key: filename,
+      body: Buffer.from(data, 'base64'),
+      ContentEncoding: 'base64',
+      ContentType: contentType
+    }
+    s3.upload(params, function(s3Err, data) {
+        if(s3Err) {
+          console.log(s3Err);
+          reject(s3Err)
+        }
+        console.log('Se subio correctamente');
+        resolve(`${data.location}`)
+    });
+  });
+}
 
 const postTestImage = async (event, context) => {
   const request = event.body;
   const file = request.images;
-  let upladedInfo;
+  let upladedInfo = uploadFile(file.filename, file.content.data, "image/jpeg");
 
-  await s3.createBucket(async function () {
-    const params = {
-      Bucket: process.env.BUCKET_NAME,
-      Key: file.filename,
-      Body: file.content,
-    };
 
-    await s3.upload(params, function (err, data) {
-      if (err) {
-        console.log(err);
-      }
-      console.log("respondio data", data);
-      upladedInfo = data;
-    });
-  });
+  // await s3.createBucket(async function () {
+  //   const params = {
+  //     Bucket: process.env.BUCKET_NAME,
+  //     Key: file.filename,
+  //     Body: file.content,
+  //   };
 
-  console.log("respuesta subida ", upladedInfo);
+  //   await s3.upload(params, function (err, data) {
+  //     if (err) {
+  //       console.log(err);
+  //     }
+  //     console.log("respondio data", data);
+  //     upladedInfo = data;
+  //   });
+  // });
+
+  // console.log("respuesta subida ", upladedInfo);
   return {
     statusCode: 200,
     body: JSON.stringify({
-      response: upladedInfo,
+      response: upladedInfo, file,
     }),
   };
 };
