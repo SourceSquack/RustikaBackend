@@ -1,28 +1,34 @@
-const {mongoConect} = require("../../config/db");
+const { mongoConect } = require("../../config/db");
+const { uploadFile } = require('../../services/uploadImage');
 const dish = require('../../models/Platos');
 const middy = require("@middy/core");
 const jsonBodyParser = require("@middy/http-json-body-parser");
+const multiparDataParser = require("@middy/http-multipart-body-parser");
 
 const createDish = async (event) => {
-    if(!event.body) return {
+    if (!event.body) return {
         statusCode: 400,
-        body: JSON.stringify({"error": "Debes pasar los campos necesarios para crear el plato"})
+        body: JSON.stringify({ "error": "Debes pasar los campos necesarios para crear el plato" })
     };
-    const { name, img, units, value, description, category  } = event.body;
+    // validacion de imagen a subir
+    if (!event.body.img) return {
+        statusCode: 400,
+        body: JSON.stringify({ "error": "Debes subir la imagen para crear el plato" })
+    }
+    const { name, units, value, description, category } = event.body;
+    const image = event.body.img;
     try {
-        //conexion con la db
+        // conexion con la db
         mongoConect(process.env.MONGO_URI);
-        
         // validacion de campos obligarios
-        const validate = {
+        let validate = {
             name,
-            img,
             units,
             value,
             description,
             category,
         };
-        for(const key in validate) {
+        for (const key in validate) {
             const element = validate[key];
             if (!element && key !== "units") {
                 return {
@@ -33,25 +39,30 @@ const createDish = async (event) => {
                 }
             };
         };
+        // Subir la imagen al S3 Bucket
+        let s3Img = await uploadFile(image.filename, image.content, "image/jpeg");
+        validate = {
+            ...validate,
+            img: s3Img.Location
+        };
         // creacion de la nueva instancia en la db
         const dishNuevo = new dish(validate);
         await dishNuevo.save();
-    
+
         return {
             statusCode: 200,
-            body: JSON.stringify({
-                "message": "El plato se ha creado correctamente"
-            })
+            body: JSON.stringify({"message": "El plato se creó correctamente"})
         };
     } catch (error) {
         return {
-            statusCode: 500,
-            body: JSON.stringify({"error": error})
+            statusCode: 400,
+            body: JSON.stringify(error)
         };
     }
 };
 
-module.exports = { 
+module.exports = {
     createDish: middy(createDish)
         .use(jsonBodyParser())
+        .use(multiparDataParser())
 };
