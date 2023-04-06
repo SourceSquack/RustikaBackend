@@ -52,7 +52,10 @@ const updateDish = async (event) => {
             }
         }
     } catch (error) {
-        console.log(error);
+        return {
+            statusCode: 400,
+            body: JSON.stringify({"error" : error.message})
+        };
     }
 };
 
