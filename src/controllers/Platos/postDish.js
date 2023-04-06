@@ -51,13 +51,10 @@ const createDish = async (event) => {
 
         return {
             statusCode: 200,
-            body: JSON.stringify({"message": "El plato se creó correctamente"})
+            body: JSON.stringify({ "message": "El plato se creó correctamente" })
         };
     } catch (error) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify(error)
-        };
+        console.log(error)
     }
 };
 
