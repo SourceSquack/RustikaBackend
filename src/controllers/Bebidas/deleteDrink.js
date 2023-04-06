@@ -21,10 +21,9 @@ const deleteDrink = async (event) => {
     } catch (error) {
         return {
             statusCode: 400,
-            body: JSON.stringify({"error": error})
-        }
+            body: JSON.stringify({"error" : error.message})
+        };
     }
-
 };
 
 module.exports = {deleteDrink}

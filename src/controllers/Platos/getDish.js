@@ -13,8 +13,8 @@ const getDish = async (event) => {
         }
     } catch (error) {
         return {
-            statusCode: 500,
-            body: JSON.stringify({ "error": error })
+            statusCode: 400,
+            body: JSON.stringify({"error" : error.message})
         };
     }
 };
