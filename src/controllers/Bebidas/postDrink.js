@@ -41,7 +41,7 @@ const createDrink = async (event) => {
             };
         };
         // Subir la imagen al S3 bucket
-        let s3Img = await uploadFile(image.filename, image.content, "image/jpeg");
+        let s3Img = await uploadFile(`bebidas${validate.name}`, image.content, "image/jpeg");
         validate = {
             ...validate,
             img: s3Img.Location

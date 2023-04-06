@@ -20,7 +20,8 @@ const updateDrink = async (event) => {
         // Subida de la imagen en caso de querer cambiarla en el doc
         if(event.body.img) {
             const image = event.body.img;
-            const s3Img = await uploadFile(image.filename, image.content, "image/jpeg");
+            const doc = await drink.findById(id).exec();
+            const s3Img = await uploadFile(`bebidas${doc.name}`, image.content, "image/jpeg");
             updatedDrink = await drink.updateOne(
                 {_id: id},
                 {

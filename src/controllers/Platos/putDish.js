@@ -20,7 +20,8 @@ const updateDish = async (event) => {
         // subida de imagen en caso de querer cambiarla en el doc
         if (event.body.img) {
             const image = event.body.img;
-            const s3Img = await uploadFile(image.filename, image.content, "image/jpeg");
+            const doc = await dish.findById(id).exec();
+            const s3Img = await uploadFile(`platos${doc.name}`, image.content, "image/jpeg");
             updatedDish = await dish.updateOne(
                 {_id: id},
                 {

@@ -40,7 +40,7 @@ const createDish = async (event) => {
             };
         };
         // Subir la imagen al S3 Bucket
-        let s3Img = await uploadFile(image.filename, image.content, "image/jpeg");
+        let s3Img = await uploadFile(`platos${validate.name}`, image.content, "image/jpeg");
         validate = {
             ...validate,
             img: s3Img.Location
