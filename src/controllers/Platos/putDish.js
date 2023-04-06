@@ -51,12 +51,8 @@ const updateDish = async (event) => {
                 body: JSON.stringify({"message": "Ocurrió un error actualizando el plato"})
             }
         }
-
     } catch (error) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify(error)
-        }
+        console.log(error);
     }
 };
 
