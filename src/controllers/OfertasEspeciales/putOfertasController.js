@@ -16,8 +16,8 @@ const putOfertas = async (event, context) => {
       statusCode: 400,
       body: JSON.stringify({ Error: "no body" }),
     };
-  const { id, image, finalDate, initialDate } = event.body;
-  if (!id || (!image && !finalDate && !initialDate))
+  const { id, image, finalDate, initialDate, name } = event.body;
+  if (!id || (!image && !finalDate && !initialDate && !name))
     return {
       statusCode: 400,
       body: JSON.stringify({ Error: event.body }),
@@ -43,12 +43,21 @@ const putOfertas = async (event, context) => {
               image.mimetype,
           }),
         };
+      let offerName = offerToUpdate.name;
+      if (name) {
+        offerName = name;
+      }
+      const extencion = image.mimetype.split("/")[1];
+      console.log(`oferta${name}.${extencion}`);
       const uploadedImage = await uploadFile(
-        image.filename,
+        `oferta${name}.${extencion}`,
         image.content,
-        "image/jpeg"
+        image.mimetype
       );
       offerToUpdate.image = uploadedImage.Location;
+    }
+    if (name) {
+      offerToUpdate.name = name;
     }
     if (initialDate && finalDate) {
       const dateObjectInitialDate = new Date(initialDate);

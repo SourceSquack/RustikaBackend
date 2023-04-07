@@ -16,8 +16,8 @@ const postOfertas = async (event, context) => {
       statusCode: 400,
       body: JSON.stringify({ Error: "no body" }),
     };
-  const { image, initialDate, finalDate } = event.body;
-  if (!image || !initialDate || !finalDate)
+  const { image, initialDate, finalDate, name } = event.body;
+  if (!image || !initialDate || !finalDate || !name)
     return {
       statusCode: 400,
       body: JSON.stringify({ Error: "Faltan datos" }),
@@ -59,10 +59,12 @@ const postOfertas = async (event, context) => {
       }),
     };
   try {
+    const extencion = image.mimetype.split("/")[1]
+    console.log(`oferta${name}.${extencion}`);
     const uploadedImage = await uploadFile(
-      image.filename,
+      `oferta${name}.${extencion}`,
       image.content,
-      "image/jpeg"
+      image.mimetype
     );
     //validacion de error
     const newOffer = await Offers.create({
