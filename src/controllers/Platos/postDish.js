@@ -15,7 +15,7 @@ const createDish = async (event) => {
         statusCode: 400,
         body: JSON.stringify({ "error": "Debes subir la imagen para crear el plato" })
     }
-    const { name, units, value, description, category } = event.body;
+    const { name, units, value, description, category, discount } = event.body;
     const image = event.body.img;
     try {
         // conexion con la db
@@ -27,6 +27,7 @@ const createDish = async (event) => {
             value,
             description,
             category,
+            discount
         };
         for (const key in validate) {
             const element = validate[key];

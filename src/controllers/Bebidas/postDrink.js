@@ -15,7 +15,7 @@ const createDrink = async (event) => {
         statusCode: 400,
         body: JSON.stringify({ "error": "Debes subir la imagen para crear la bebida" })
     }
-    const { name, valueUnit, valueJug, description, category, subCategory } = event.body;
+    const { name, valueUnit, valueJug, description, category, subCategory, discount } = event.body;
     const image = event.body.img;
     try {
         // conexion a la db
@@ -27,7 +27,8 @@ const createDrink = async (event) => {
             valueJug,
             description,
             category,
-            subCategory
+            subCategory,
+            discount
         };
         for (const key in validate) {
             const element = validate[key];
