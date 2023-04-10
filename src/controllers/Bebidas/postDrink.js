@@ -18,7 +18,7 @@ const createDrink = async (event) => {
     const { name, valueUnit, valueJug, description, category, subCategory, discount } = event.body;
     const image = event.body.img;
     // validacion del formato de imagen
-    if(image.mimetype !== 'image/jpeg') {
+    if(image.mimetype !== 'image/jpeg' && image.mimetype !== 'image/png') {
         return {
             statusCode: 400,
             body: JSON.stringify({"error" : "El formato de imagen es inválido"})
@@ -49,7 +49,7 @@ const createDrink = async (event) => {
             };
         };
         // Subir la imagen al S3 bucket
-        let s3Img = await uploadFile(`bebidas${validate.name}`, image.content, "image/jpeg");
+        let s3Img = await uploadFile(`bebidas${validate.name}`, image.content, image.mimetype);
         validate = {
             ...validate,
             img: s3Img.Location
@@ -60,9 +60,7 @@ const createDrink = async (event) => {
 
         return {
             statusCode: 200,
-            body: JSON.stringify({
-                "message": "La bebida se creó correctamente"
-            })
+            body: JSON.stringify({"message": "La bebida se creó correctamente"})
         };
     } catch (error) {
         return {
