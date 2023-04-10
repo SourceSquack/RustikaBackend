@@ -59,7 +59,7 @@ const getDishes = async (event) => {
                 body: JSON.stringify(filteredDishes)
             }
         };
-        // Todos los docs o filtrados por categoria o valor
+        // Todos los docs o filtrados por categoria y/o valor
         filteredDishes = await dish.paginate({ ...auxParams }, options);
         return {
             statusCode: 200,
