@@ -6,6 +6,7 @@ const getDishes = async (event) => {
         page: 1,
         limit: 5
     };
+    // validaciones de params
     if (event.queryStringParameters) {
         let { page , limit } = event.queryStringParameters;
 
@@ -13,7 +14,6 @@ const getDishes = async (event) => {
             page = parseInt(page)
             limit = parseInt(limit)
             options = {
-                ...options,
                 page,
                 limit
             }
@@ -26,7 +26,7 @@ const getDishes = async (event) => {
                 page
             }
         }
-        
+
         if(limit) {
             limit = parseInt(limit)
             options = {
@@ -37,10 +37,22 @@ const getDishes = async (event) => {
     };
 
     try {
+        // conexion a la db
         mongoConect(process.env.MONGO_URI);
+
         let filteredDishes;
+        // Filtro por nombre
+        if(event.queryStringParameters.name) {
+            const name = event.queryStringParameters.name;
+            const regex = new RegExp(name, "i"),
+            filteredDishes = await dish.paginate({ name: { $regex: regex}}, options);
+            return {
+                statusCode: 200,
+                body: JSON.stringify(filteredDishes)
+            }
+        }
+        // Todos los docs por defecto
         filteredDishes = await dish.paginate({}, options);
-        // filteredDishes = filteredDishes.docs
         return {
             statusCode: 200,
             body: JSON.stringify(filteredDishes)
