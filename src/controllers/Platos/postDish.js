@@ -17,6 +17,13 @@ const createDish = async (event) => {
     }
     const { name, units, value, description, category, discount } = event.body;
     const image = event.body.img;
+    // validacion del formato de imagen
+    if(image.mimetype !== 'image/jpeg') {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({"error" : "El formato de imagen es inválido"})
+        };
+    };
     try {
         // conexion con la db
         mongoConect(process.env.MONGO_URI);
