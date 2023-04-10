@@ -58,7 +58,7 @@ const updateDrink = async (event) => {
                     }
                 }
             } else {
-                // Caso donde no se actualiza nombre pero si la imagen, se busca el doc para asignar el nombre a la img
+                // Caso donde no se actualiza nombre, se busca el doc para asignar el nombre a la img
                 const doc = await drink.findById(id).exec();
                 const s3Img = await uploadFile(`bebidas${doc.name}`, image.content, "image/jpeg");
                 updatedDrink = await drink.updateOne(
