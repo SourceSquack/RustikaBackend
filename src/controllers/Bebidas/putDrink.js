@@ -30,7 +30,7 @@ const updateDrink = async (event) => {
         if(event.body.img) {
             const image = event.body.img;
             // validar el formato de imagen
-            if(image.mimetype !== 'image/jpeg') {
+            if(image.mimetype !== 'image/jpeg' && image.mimetype !== 'image/png') {
                 return {
                     statusCode: 400,
                     body: JSON.stringify({"error" : "El formato de imagen es inválido"})
@@ -38,7 +38,7 @@ const updateDrink = async (event) => {
             };
             // En caso de cambiar imagen y nombre, para que ambos queden con el mismo valor
             if(event.body.name) {
-                const s3Img = await uploadFile(`bebidas${update.name}`, image.content, "image/jpeg");
+                const s3Img = await uploadFile(`bebidas${update.name}`, image.content, image.mimetype);
                 updatedDrink = await drink.updateOne(
                     {_id: id},
                     {   
@@ -60,7 +60,7 @@ const updateDrink = async (event) => {
             } else {
                 // Caso donde no se actualiza nombre, se busca el doc para asignar el nombre a la img
                 const doc = await drink.findById(id).exec();
-                const s3Img = await uploadFile(`bebidas${doc.name}`, image.content, "image/jpeg");
+                const s3Img = await uploadFile(`bebidas${doc.name}`, image.content, image.mimetype);
                 updatedDrink = await drink.updateOne(
                     {_id: id},
                     {   
