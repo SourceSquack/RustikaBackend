@@ -7,10 +7,32 @@ const getDishes = async (event) => {
         limit: 5
     };
     if (event.queryStringParameters) {
-        const { page , limit } = event.queryStringParameters;
-        options = {
-            page,
-            limit
+        let { page , limit } = event.queryStringParameters;
+
+        if(page && limit) {
+            page = parseInt(page)
+            limit = parseInt(limit)
+            options = {
+                ...options,
+                page,
+                limit
+            }
+        }
+
+        if(page) {
+            page = parseInt(page)
+            options = {
+                ...options,
+                page
+            }
+        }
+        
+        if(limit) {
+            limit = parseInt(limit)
+            options = {
+                ...options,
+                limit
+            }
         }
     };
 

@@ -18,10 +18,10 @@ const createDish = async (event) => {
     const { name, units, value, description, category, discount } = event.body;
     const image = event.body.img;
     // validacion del formato de imagen
-    if(image.mimetype !== 'image/jpeg') {
+    if(image.mimetype !== 'image/jpeg' && image.mimetype !== 'image/png') {
         return {
             statusCode: 400,
-            body: JSON.stringify({"error" : "El formato de imagen es inválido"})
+            body: JSON.stringify({"error" : "El formato de imagen es inválido, debe ser jpg, jpeg o png"})
         };
     };
     try {
@@ -38,7 +38,7 @@ const createDish = async (event) => {
         };
         for (const key in validate) {
             const element = validate[key];
-            if (!element && key !== "units") {
+            if (!element && key !== "units" && key !== "discount") {
                 return {
                     statusCode: 400,
                     body: JSON.stringify({
@@ -48,7 +48,7 @@ const createDish = async (event) => {
             };
         };
         // Subir la imagen al S3 Bucket
-        let s3Img = await uploadFile(`platos${validate.name}`, image.content, "image/jpeg");
+        let s3Img = await uploadFile(`platos${validate.name}`, image.content, image.mimetype);
         validate = {
             ...validate,
             img: s3Img.Location
