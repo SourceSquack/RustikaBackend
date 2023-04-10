@@ -29,6 +29,10 @@ const drinkSchema = new mongoose.Schema(
         subCategory: {
             type: String,
             required: true
+        },
+        discount: {
+            type: Boolean,
+            default: false
         }
     },{
         versionKey: false,

@@ -23,8 +23,8 @@ const getDrinks = async (event) => {
         }
     } catch (error) {
         return {
-            statusCode: 500,
-            body: JSON.stringify({ "Error": error })
+            statusCode: 400,
+            body: JSON.stringify({"error" : error.message})
         };
     }
 };

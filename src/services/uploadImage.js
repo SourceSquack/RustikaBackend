@@ -8,7 +8,6 @@ const s3 = new AWS.S3({
 });
 
 const uploadFile = (filename, data, contentType) => {
-  console.log('Subiendo...');
   return new Promise((resolve, reject) => {
     const params = {
       Bucket: process.env.BUCKET_NAME,
