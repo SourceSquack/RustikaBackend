@@ -4,6 +4,7 @@ const middy = require("@middy/core");
 const urlencodeParser = require("@middy/http-urlencode-body-parser");
 const jsonBodyParser = require("@middy/http-json-body-parser");
 const multiparDataParser = require("@middy/http-multipart-body-parser");
+const { uploadFile } = require("../../services/uploadImage");
 
 Date.prototype.isValid = function () {
   return this.getTime() === this.getTime();
@@ -15,20 +16,48 @@ const putOfertas = async (event, context) => {
       statusCode: 400,
       body: JSON.stringify({ Error: "no body" }),
     };
-  const { id, image, finalDate, initialDate } = event.body;
-  if (!id || (!image && !finalDate && !initialDate))
+  const { id, image, finalDate, initialDate, name } = event.body;
+  if (!id || (!image && !finalDate && !initialDate && !name))
     return {
       statusCode: 400,
       body: JSON.stringify({ Error: event.body }),
     };
   try {
     const offerToUpdate = await Offers.findById(id).exec();
-    if (offerToUpdate == null)return {
-      statusCode: 400,
-      body: JSON.stringify({ Error: "No se encontro una oferta con ese ID" }),
-    };
+    if (offerToUpdate == null)
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ Error: "No se encontro una oferta con ese ID" }),
+      };
     if (image) {
-      offerToUpdate.image = image;
+      if (
+        image.mimetype !== "image/png" &&
+        image.mimetype !== "image/jpeg" &&
+        image.mimetype !== "image/webp"
+      )
+        return {
+          statusCode: 400,
+          body: JSON.stringify({
+            Error:
+              "Formato de archivo no sorportado: Formato enviado: " +
+              image.mimetype,
+          }),
+        };
+      let offerName = offerToUpdate.name;
+      if (name) {
+        offerName = name;
+      }
+      const extencion = image.mimetype.split("/")[1];
+      console.log(`oferta${name}.${extencion}`);
+      const uploadedImage = await uploadFile(
+        `oferta${name}.${extencion}`,
+        image.content,
+        image.mimetype
+      );
+      offerToUpdate.image = uploadedImage.Location;
+    }
+    if (name) {
+      offerToUpdate.name = name;
     }
     if (initialDate && finalDate) {
       const dateObjectInitialDate = new Date(initialDate);
@@ -99,7 +128,7 @@ const putOfertas = async (event, context) => {
     await offerToUpdate.save();
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Actualizado"}),
+      body: JSON.stringify({ message: "Actualizado" }),
     };
   } catch (error) {
     if (error.name === "CastError")

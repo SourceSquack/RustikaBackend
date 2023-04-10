@@ -2,9 +2,9 @@ const Offers = require("../../models/Ofertas");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
 const jsonBodyParser = require("@middy/http-json-body-parser");
-const AWS = require("aws-sdk")
-const s3 = new AWS.S3()
-const fileType = require("file-type")
+const urlencodeParser = require("@middy/http-urlencode-body-parser");
+const multiparDataParser = require("@middy/http-multipart-body-parser");
+const { uploadFile } = require("../../services/uploadImage");
 
 Date.prototype.isValid = function () {
   return this.getTime() === this.getTime();
@@ -16,11 +16,22 @@ const postOfertas = async (event, context) => {
       statusCode: 400,
       body: JSON.stringify({ Error: "no body" }),
     };
-  const { image, initialDate, finalDate } = event.body;
-  if (!image || !initialDate || !finalDate)
+  const { image, initialDate, finalDate, name } = event.body;
+  if (!image || !initialDate || !finalDate || !name)
     return {
       statusCode: 400,
       body: JSON.stringify({ Error: "Faltan datos" }),
+    };
+  if (
+    image.mimetype !== "image/png" &&
+    image.mimetype !== "image/jpg" &&
+    image.mimetype !== "image/webp"
+  )
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        Error: "Formato de archivo no sorportado: Formato enviado:" + image.mimetype,
+      }),
     };
   const dateObjectInitialDate = new Date(initialDate);
   if (!dateObjectInitialDate.isValid())
@@ -48,8 +59,16 @@ const postOfertas = async (event, context) => {
       }),
     };
   try {
+    const extencion = image.mimetype.split("/")[1]
+    console.log(`oferta${name}.${extencion}`);
+    const uploadedImage = await uploadFile(
+      `oferta${name}.${extencion}`,
+      image.content,
+      image.mimetype
+    );
+    //validacion de error
     const newOffer = await Offers.create({
-      image,
+      image: uploadedImage.Location,
       initialDate: dateObjectInitialDate,
       finalDate: dateObjectFinalDate,
     });
@@ -58,12 +77,16 @@ const postOfertas = async (event, context) => {
       body: JSON.stringify(newOffer),
     };
   } catch (error) {
+    console.log("ERROR:", error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ Error: error }),
+      body: JSON.stringify({ Error: "error en el catch" }),
     };
   }
 };
 module.exports = {
-  postOfertas: middy(postOfertas).use(jsonBodyParser()),
+  postOfertas: middy(postOfertas)
+    .use(jsonBodyParser())
+    .use(urlencodeParser())
+    .use(multiparDataParser()),
 };

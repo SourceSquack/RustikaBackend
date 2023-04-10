@@ -137,3 +137,28 @@ functions:
       - httpApi:
           path: /test
           method: post
+########--------------------------------Reservas------------------------------ ###########
+  getReservation:
+    handler: src/controllers/Reservaciones/getReservaController.getReservation
+    events:
+      - httpApi:
+          path: /reservas
+          method: get
+  postReservation:
+    handler: src/controllers/Reservaciones/postReservaController.postReservation
+    events:
+      - httpApi:
+          path: /reservas
+          method: post
+  putReservation:
+    handler: src/controllers/Reservaciones/putReservaController.putReservation
+    events:
+      - httpApi:
+          path: /reservas
+          method: put
+  deleteReservation:
+    handler: src/controllers/Reservaciones/deleteReservaController.deleteReservation
+    events:
+      - httpApi:
+          path: /reservas
+          method: delete
