@@ -57,8 +57,8 @@ const updateDrink = async (event) => {
                         body: JSON.stringify({"message": "Ocurrió un error actualizando la bebida"})
                     }
                 }
+            // Caso donde no se actualiza nombre, se busca el doc para asignar el nombre a la img
             } else {
-                // Caso donde no se actualiza nombre, se busca el doc para asignar el nombre a la img
                 const doc = await drink.findById(id).exec();
                 const s3Img = await uploadFile(`bebidas${doc.name}`, image.content, image.mimetype);
                 updatedDrink = await drink.updateOne(
