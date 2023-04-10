@@ -33,7 +33,7 @@ const updateDrink = async (event) => {
             if(image.mimetype !== 'image/jpeg' && image.mimetype !== 'image/png') {
                 return {
                     statusCode: 400,
-                    body: JSON.stringify({"error" : "El formato de imagen es inválido"})
+                    body: JSON.stringify({"error" : "El formato de imagen es inválido, debe ser jpg, jpeg o png"})
                 };
             };
             // En caso de cambiar imagen y nombre, para que ambos queden con el mismo valor
