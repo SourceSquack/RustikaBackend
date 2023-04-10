@@ -15,8 +15,15 @@ const createDrink = async (event) => {
         statusCode: 400,
         body: JSON.stringify({ "error": "Debes subir la imagen para crear la bebida" })
     }
-    const { name, valueUnit, valueJug, description, category, subCategory } = event.body;
+    const { name, valueUnit, valueJug, description, category, subCategory, discount } = event.body;
     const image = event.body.img;
+    // validacion del formato de imagen
+    if(image.mimetype !== 'image/jpeg') {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({"error" : "El formato de imagen es inválido"})
+        };
+    };
     try {
         // conexion a la db
         mongoConect(process.env.MONGO_URI);
@@ -27,7 +34,8 @@ const createDrink = async (event) => {
             valueJug,
             description,
             category,
-            subCategory
+            subCategory,
+            discount
         };
         for (const key in validate) {
             const element = validate[key];
@@ -46,6 +54,7 @@ const createDrink = async (event) => {
             ...validate,
             img: s3Img.Location
         };
+        // creacion de la nueva instancia en la db
         const drinkNueva = new drink(validate);
         await drinkNueva.save();
 
