@@ -88,7 +88,7 @@ const postReservation = async (event, context) => {
       active: true,
       payed,
     });
-    const emailEnviado = await mailSender("myguelangel12@hotmail.com","booking","You made a reservation in rustika restaurant at 9:00pm")
+    const emailEnviado = await mailSender(email ,"booking","You made a reservation in rustika restaurant at 9:00pm")
     console.log(emailEnviado);
     return {
       statusCode: 200,
