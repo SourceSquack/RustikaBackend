@@ -19,10 +19,11 @@ const discounts = new mongoose.Schema(
     },
     specific: {
       type: String,
-    },percentage: {
+    },
+    percentage: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   {
     versionKey: false,
