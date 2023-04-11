@@ -18,7 +18,10 @@ const createDish = async (event) => {
     const { name, units, value, description, category, discount } = event.body;
     const image = event.body.img;
     // validacion del formato de imagen
-    if(image.mimetype !== 'image/jpeg' && image.mimetype !== 'image/png') {
+    if(image.mimetype !== 'image/jpeg' &&
+       image.mimetype !== 'image/png' &&
+       image.mimetype !== "image/webp"
+       ) {
         return {
             statusCode: 400,
             body: JSON.stringify({"error" : "El formato de imagen es inválido, debe ser jpg, jpeg o png"})
