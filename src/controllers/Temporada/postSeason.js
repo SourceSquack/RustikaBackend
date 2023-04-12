@@ -32,9 +32,50 @@ const postHighSeason = async (event) => {
             }
         };
     };
-    try {
-        
-    } catch (error) {
-
+    // creacion de fechas con los datos pasados por body
+    const dateObjectInitialDate = new Date(validate.initialDateTime);
+    const dateObjectFinalDate = new Date(validate.finalDateTime);
+    // validaciones 
+    if (!dateObjectInitialDate.isValid() || !dateObjectFinalDate.isValid()) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                "error": "Formato de fecha invalido, debe ser(yyyy-mm-dd)"
+            }),
+        };
+    }
+    if(dateObjectInitialDate > dateObjectFinalDate) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                "error": "La fecha inicial no puede ser mayor que la fecha final"
+            }),
+        }
     };
+    validate = {
+        ...validate,
+        initialDateTime: dateObjectInitialDate,
+        finalDateTime: dateObjectFinalDate
+    };
+    try {
+        // conexion a la db
+        mongoConect(process.env.MONGO_URI);
+        // creacion de la instancia 
+        const newSeason = new highSeason(validate);
+        await newSeason.save();
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify(newSeason)
+        };
+    } catch (error) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ "error": error.message }),
+        };
+    };
+};
+
+module.exports = {
+    postHighSeason: middy(postHighSeason).use(jsonBodyParser()),
 };

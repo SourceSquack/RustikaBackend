@@ -162,3 +162,10 @@ functions:
       - httpApi:
           path: /reservas
           method: delete
+########--------------------------------Temporada------------------------------ ###########
+  postSeason:
+    handler: src/controllers/Temporada/postSeason.postHighSeason
+    events:
+      - httpApi:
+          path: /temporada
+          method: post
