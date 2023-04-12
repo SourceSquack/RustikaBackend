@@ -66,7 +66,9 @@ const postHighSeason = async (event) => {
 
         return {
             statusCode: 200,
-            body: JSON.stringify(newSeason)
+            body: JSON.stringify({
+                "message": "La temporada alta se creó correctamente"
+            }),
         };
     } catch (error) {
         return {
