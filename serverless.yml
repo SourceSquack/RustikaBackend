@@ -181,3 +181,9 @@ functions:
       - httpApi:
           path: /temporada/{id}
           method: put
+  deleteSeason:
+    handler: src/controllers/Temporada/deleteSeason.deleteSeason
+    events:
+      - httpApi:
+          path: /temporada/{id}
+          method: delete
