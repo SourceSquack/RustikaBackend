@@ -14,8 +14,6 @@ provider:
   apiGateway:
     binaryMediaTypes:
       - 'multipart/form-data'
-  environment:
-    MONGO_URI: ${env:MONGO_URI}
 
 functions:
 ########--------------------------------Platos------------------------------ ###########
@@ -162,3 +160,8 @@ functions:
       - httpApi:
           path: /reservas
           method: delete
+########--------------------------------TimeBased------------------------------ ###########
+  filterDates:
+    handler: src/controllers/TimeBasedControllers/expiredDates.filterExpiredDates
+    events:
+      - schedule: cron(0 5 * * ? *)
