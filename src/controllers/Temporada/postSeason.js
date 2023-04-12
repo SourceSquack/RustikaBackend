@@ -41,7 +41,7 @@ const postHighSeason = async (event) => {
             statusCode: 400,
             body: JSON.stringify({
                 "error": "Formato de fecha invalido, debe ser(yyyy-mm-dd)"
-            }),
+            })
         };
     }
     if(dateObjectInitialDate > dateObjectFinalDate) {
@@ -49,7 +49,7 @@ const postHighSeason = async (event) => {
             statusCode: 400,
             body: JSON.stringify({
                 "error": "La fecha inicial no puede ser mayor que la fecha final"
-            }),
+            })
         }
     };
     validate = {

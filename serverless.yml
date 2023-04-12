@@ -175,3 +175,9 @@ functions:
       - httpApi:
           path: /temporada
           method: post
+  updateSeason:
+    handler: src/controllers/Temporada/putSeason.updateSeason
+    events:
+      - httpApi:
+          path: /temporada/{id}
+          method: put
