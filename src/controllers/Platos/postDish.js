@@ -45,7 +45,7 @@ const createDish = async (event) => {
                 return {
                     statusCode: 400,
                     body: JSON.stringify({
-                        "message": `el campo <<${key}>> no puede estar vacio`
+                        "error": `el campo <<${key}>> no puede estar vacio`
                     })
                 }
             };
