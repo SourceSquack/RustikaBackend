@@ -48,7 +48,6 @@ const putOfertas = async (event, context) => {
         offerName = name;
       }
       const extencion = image.mimetype.split("/")[1];
-      console.log(`oferta${name}.${extencion}`);
       const uploadedImage = await uploadFile(
         `oferta${name}.${extencion}`,
         image.content,

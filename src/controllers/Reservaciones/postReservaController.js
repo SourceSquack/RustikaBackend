@@ -43,6 +43,7 @@ const postReservation = async (event, context) => {
       }),
     };
   const horaDeCierre = 20;
+  const horaDeApertura = 10;
   if (dateObjectFinalDate.getHours() > horaDeCierre)
     return {
       statusCode: 400,
@@ -51,7 +52,15 @@ const postReservation = async (event, context) => {
           "La reservacion no puede exceder la hora de cierre",
       }),
     };
-
+  if (dateObjectInitialDate.getHours() < horaDeApertura)
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        Error:
+          "La reservacion no puede ser antes de la hora de apertura",
+      }),
+    };
+  
   if (!dateObjectInitialDate.isValid())
     return {
       statusCode: 400,
@@ -88,8 +97,7 @@ const postReservation = async (event, context) => {
       active: true,
       payed,
     });
-    const emailEnviado = await mailSender("myguelangel12@hotmail.com","booking","You made a reservation in rustika restaurant at 9:00pm")
-    console.log(emailEnviado);
+    await mailSender(email ,"booking",`You made a reservation in rustika restaurant from ${dateObjectInitialDate.toLocaleString()} to ${dateObjectFinalDate.toLocaleString()}` )
     return {
       statusCode: 200,
       body: JSON.stringify(newReservation),
