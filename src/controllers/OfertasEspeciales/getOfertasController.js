@@ -3,11 +3,12 @@ const {mongoConect} = require("../../config/db");
 
 const getOfertas = async(event, context)=>{
   mongoConect(process.env.MONGO_URI)
+  const toDay = new Date();
   try {
-    const allOfers = await Offers.find({})
+    const activeOffers = await Offers.find({initialDate: { $gte: toDay }})
       return {
           statusCode: 200,
-          body: JSON.stringify(allOfers),
+          body: JSON.stringify(activeOffers),
         };
   } catch (error) {
     return {
