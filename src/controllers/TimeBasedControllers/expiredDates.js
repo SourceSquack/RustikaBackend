@@ -9,7 +9,7 @@ const filterExpiredDates = async (event) => {
   try {
     console.log("Filter dates execution");
     await Offers.deleteMany({ finalDate: { $lt: toDay } });
-    await discounts.deleteMany({ finalDate: { $lt: toDay } });
+    //await discounts.deleteMany({ finalDate: { $lt: toDay } });
     await booking.updateMany(
       { finalDateTime: { $lt: toDay } },
       { active: false }
