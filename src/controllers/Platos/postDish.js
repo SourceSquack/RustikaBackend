@@ -24,7 +24,7 @@ const createDish = async (event) => {
        ) {
         return {
             statusCode: 400,
-            body: JSON.stringify({"error" : "El formato de imagen es inválido, debe ser jpg, jpeg o png"})
+            body: JSON.stringify({"error" : "El formato de imagen es inválido, debe ser jpg, jpeg,png o webp. El formato de la imagen enviada es: " + image.mimetype})
         };
     };
     try {
@@ -41,11 +41,11 @@ const createDish = async (event) => {
         };
         for (const key in validate) {
             const element = validate[key];
-            if (!element && key !== "units" && key !== "discount") {
+            if (!element && key !== "units" && key !== "discount" && key !== "description") {
                 return {
                     statusCode: 400,
                     body: JSON.stringify({
-                        "message": `el campo ${key} no puede estar vacio`
+                        "error": `el campo <<${key}>> no puede estar vacio`
                     })
                 }
             };
