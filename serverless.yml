@@ -14,8 +14,16 @@ provider:
   apiGateway:
     binaryMediaTypes:
       - 'multipart/form-data'
+  httpApi:
+    authorizers:
+      customAuthorizer:
+        type: request
+        functionName: testAuthorizer
 
 functions:
+########------------------------------Authorizer---------------------------- ###########
+  testAuthorizer:
+    handler: src/controllers/Authorization/authorizer.authorizer
 ########--------------------------------Platos------------------------------ ###########
   getDishes:
     handler: src/controllers/Platos/getDishes.getDishes
@@ -135,6 +143,8 @@ functions:
       - httpApi:
           path: /test
           method: post
+          authorizer:
+            name: customAuthorizer
 ########--------------------------------Reservas------------------------------ ###########
   getReservation:
     handler: src/controllers/Reservaciones/getReservaController.getReservation
@@ -188,5 +198,13 @@ functions:
 ########--------------------------------TimeBased------------------------------ ###########
   filterDates:
     handler: src/controllers/TimeBasedControllers/expiredDates.filterExpiredDates
+    events:
+      - schedule: cron(5 5 * * ? *)
+  activeDiscounts:
+    handler: src/controllers/TimeBasedControllers/activateDiscounts.activate
+    events:
+      - schedule: cron(0 5 * * ? *)
+  deactiveDiscounts:
+    handler: src/controllers/TimeBasedControllers/deactivateDiscounts.deactivate
     events:
       - schedule: cron(0 5 * * ? *)
