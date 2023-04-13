@@ -25,7 +25,7 @@ const createDrink = async (event) => {
         return {
             statusCode: 400,
             body: JSON.stringify({
-                "error" : "El formato de imagen es inválido, debe ser jpg, jpeg,png o webp. El formato de la imagen enviada es:" + image.mimetype
+                "error" : "El formato de imagen es inválido, debe ser jpg, jpeg,png o webp. El formato de la imagen enviada es: " + image.mimetype
             })
         };
     };
@@ -52,7 +52,7 @@ const createDrink = async (event) => {
                 return {
                     statusCode: 400,
                     body: JSON.stringify({
-                        "message": `el campo <<${key}>> no puede estar vacio`
+                        "error": `el campo <<${key}>> no puede estar vacio`
                     })
                 }
             };
