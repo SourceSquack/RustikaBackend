@@ -22,7 +22,9 @@
     "@middy/http-multipart-body-parser": "^4.2.7",
     "@middy/http-urlencode-body-parser": "^4.2.7",
     "aws-sdk": "^2.1346.0",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
     "mongoose-paginate": "^5.0.3",
     "nodemailer": "^6.9.1"
