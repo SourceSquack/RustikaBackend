@@ -1,13 +1,13 @@
 const middy = require("@middy/core");
-const jsonBodyParser = require("@middy/http-json-body-parser");
-const urlencodeParser = require("@middy/http-urlencode-body-parser");
-const multiparDataParser = require("@middy/http-multipart-body-parser");
-const { uploadFile } = require('../services/uploadImage');
+// // const jsonBodyParser = require("@middy/http-json-body-parser");
+// // const urlencodeParser = require("@middy/http-urlencode-body-parser");
+// // const multiparDataParser = require("@middy/http-multipart-body-parser");
+const cors = require('@middy/http-cors');
 
 const postTestImage = async (event, context) => {
-  const request = event.body;
-  const file = request.images;
-  let upladedInfo = await uploadFile(file.filename, file.content, "image/jpeg");
+  // const request = event.body;
+  // const file = request.images;
+  // let upladedInfo = await uploadFile(file.filename, file.content, "image/jpeg");
 
 
   // await s3.createBucket(async function () {
@@ -27,16 +27,21 @@ const postTestImage = async (event, context) => {
   // });
 
   // console.log("respuesta subida ", upladedInfo);
+  let ola = event.body
   return {
+    // headers: {
+    //   "Access-Control-Allow-Headers" : "Content-Type",
+    //   "Access-Control-Allow-Origin":  "https://rustika-front.vercel.app",
+    //   "Access-Control-Allow-Methods": "POST"
+    // },
     statusCode: 200,
     body: JSON.stringify({
-      response: upladedInfo
+      response: ola
     })
   };
 };
-module.exports = {
+
+module.exports = { 
   postTestImage: middy(postTestImage)
-    .use(jsonBodyParser())
-    .use(urlencodeParser())
-    .use(multiparDataParser()),
+    .use(cors({origin: "https://rustika-front.vercel.app", methods: "POST"}))
 };
