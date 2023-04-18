@@ -1,6 +1,7 @@
 const booking = require("../../models/Reservas");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 const jsonBodyParser = require("@middy/http-json-body-parser");
 
 Date.prototype.isValid = function () {
@@ -159,5 +160,7 @@ const putReservation = async (event, context) => {
   }
 };
 module.exports = {
-  putReservation: middy(putReservation).use(jsonBodyParser()),
+  putReservation: middy(putReservation)
+    .use(jsonBodyParser())
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "PUT"}))
 };

@@ -1,6 +1,7 @@
 const booking = require("../../models/Reservas");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 const jsonBodyParser = require("@middy/http-json-body-parser");
 
 const deleteReservation = async (event, context) => {
@@ -31,4 +32,5 @@ const deleteReservation = async (event, context) => {
 module.exports = {
   deleteReservation: middy(deleteReservation)
     .use(jsonBodyParser())
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "DELETE"}))
 };

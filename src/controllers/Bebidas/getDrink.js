@@ -1,5 +1,7 @@
 const { mongoConect } = require("../../config/db");
 const drink = require('../../models/Bebidas');
+const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 
 const getDrink = async (event) => {
     const {id} = event.pathParameters;
@@ -19,4 +21,7 @@ const getDrink = async (event) => {
     }
 };
 
-module.exports = {getDrink};
+module.exports = { 
+    getDrink: middy(getDrink)
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "GET"}))
+};

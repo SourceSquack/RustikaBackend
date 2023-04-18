@@ -2,6 +2,7 @@ const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 const jsonBodyParser = require("@middy/http-json-body-parser");
 
 const { mongoConect } = require("../../config/db");
@@ -46,5 +47,7 @@ const login = async (event, context) => {
   }
 };
 module.exports = {
-  login: middy(login).use(jsonBodyParser()),
+  login: middy(login)
+    .use(jsonBodyParser())
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "POST"}))
 };

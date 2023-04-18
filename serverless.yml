@@ -22,6 +22,7 @@ provider:
     cors:
       allowedOrigins:
         - https://rustika-front.vercel.app
+        - http://localhost:3000
       allowedHeaders:
         - Content-Type
         - Authorization

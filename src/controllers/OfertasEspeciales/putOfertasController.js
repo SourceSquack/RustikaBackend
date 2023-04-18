@@ -1,6 +1,7 @@
 const Offers = require("../../models/Ofertas");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 const urlencodeParser = require("@middy/http-urlencode-body-parser");
 const jsonBodyParser = require("@middy/http-json-body-parser");
 const multiparDataParser = require("@middy/http-multipart-body-parser");
@@ -146,5 +147,6 @@ module.exports = {
   putOfertas: middy(putOfertas)
     .use(jsonBodyParser())
     .use(urlencodeParser())
-    .use(multiparDataParser()),
+    .use(multiparDataParser())
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "PUT"}))
 };
