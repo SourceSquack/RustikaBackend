@@ -13,7 +13,8 @@ const getDishes = async (event) => {
     let params = {
         name: undefined,
         category: undefined,
-        value: undefined
+        value: undefined,
+        discount: undefined
     };
     let auxParams = {};
     // validaciones de params
