@@ -7,7 +7,7 @@
 //Motivo (string) //
 
 const mongoose = require("mongoose");
-const mongoosePaginate = require('mongoose-paginate');
+const mongoosePaginate = require("mongoose-paginate");
 
 const booking = new mongoose.Schema(
   {
@@ -15,8 +15,8 @@ const booking = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    finalDateTime: {
-      type: Date,
+    duration: {
+      type: Number,
       required: true,
     },
     reason: {
@@ -36,10 +36,14 @@ const booking = new mongoose.Schema(
       require: true,
     },
     active: {
-        type: Boolean,
-        require: true,
-        default: true
-    }
+      type: Boolean,
+      require: true,
+      default: true,
+    },
+    email: {
+      type: String,
+      require: true,
+    },
   },
   {
     versionKey: false,

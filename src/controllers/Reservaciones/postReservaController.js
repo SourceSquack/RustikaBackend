@@ -2,7 +2,7 @@ const booking = require("../../models/Reservas");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
 const jsonBodyParser = require("@middy/http-json-body-parser");
-const {mailSender} = require("../../services/sendEmail")
+const { mailSender } = require("../../services/sendEmail");
 
 Date.prototype.isValid = function () {
   return this.getTime() === this.getTime();
@@ -14,11 +14,11 @@ const postReservation = async (event, context) => {
       statusCode: 400,
       body: JSON.stringify({ Error: "no body" }),
     };
-  const { initialDateTime, finalDateTime, reason, decoration, amount, email } =
+  const { initialDateTime, duration, reason, decoration, amount, email } =
     event.body;
   if (
     !initialDateTime ||
-    !finalDateTime ||
+    !duration ||
     !reason ||
     decoration === undefined ||
     !amount ||
@@ -32,8 +32,10 @@ const postReservation = async (event, context) => {
   const day = tomorrow.getDate();
   tomorrow.setDate(day + 1);
 
-  const dateObjectFinalDate = new Date(finalDateTime);
+  const dateObjectFinalDate = new Date(initialDateTime);
+  dateObjectFinalDate.setHours(dateObjectFinalDate.getHours() + duration[0]);
   const dateObjectInitialDate = new Date(initialDateTime);
+
   if (dateObjectInitialDate < tomorrow)
     return {
       statusCode: 400,
@@ -48,19 +50,17 @@ const postReservation = async (event, context) => {
     return {
       statusCode: 400,
       body: JSON.stringify({
-        Error:
-          "La reservacion no puede exceder la hora de cierre",
+        Error: "La reservacion no puede exceder la hora de cierre",
       }),
     };
   if (dateObjectInitialDate.getHours() < horaDeApertura)
     return {
       statusCode: 400,
       body: JSON.stringify({
-        Error:
-          "La reservacion no puede ser antes de la hora de apertura",
+        Error: "La reservacion no puede ser antes de la hora de apertura",
       }),
     };
-  
+
   if (!dateObjectInitialDate.isValid())
     return {
       statusCode: 400,
@@ -90,14 +90,19 @@ const postReservation = async (event, context) => {
 
     const newReservation = await booking.create({
       initialDateTime: dateObjectInitialDate,
-      finalDateTime: dateObjectFinalDate,
+      duration,
       reason,
       decoration,
       amount,
       active: true,
       payed,
+      email,
     });
-    await mailSender(email ,"booking",`You made a reservation in rustika restaurant from ${dateObjectInitialDate.toLocaleString()} to ${dateObjectFinalDate.toLocaleString()}` )
+    await mailSender(
+      email,
+      "booking",
+      `You made a reservation in rustika restaurant from ${dateObjectInitialDate.toLocaleString()} to ${dateObjectFinalDate.toLocaleString()}`
+    );
     return {
       statusCode: 200,
       body: JSON.stringify(newReservation),

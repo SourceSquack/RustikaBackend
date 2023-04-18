@@ -13,12 +13,12 @@ const putReservation = async (event, context) => {
       statusCode: 400,
       body: JSON.stringify({ Error: "no body" }),
     };
-  const { id, initialDateTime, finalDateTime, reason, decoration, amount } =
+  const { id, initialDateTime, duration, reason, decoration, amount } =
     event.body;
   if (
     !id ||
     !initialDateTime ||
-    !finalDateTime ||
+    !duration ||
     !reason ||
     decoration === undefined ||
     !amount
@@ -41,9 +41,12 @@ const putReservation = async (event, context) => {
     const tomorrow = new Date();
     const day = tomorrow.getDate();
     tomorrow.setDate(day + 1);
-    if (initialDateTime && finalDateTime) {
+    if (initialDateTime && duration) {
       const dateObjectInitialDate = new Date(initialDateTime);
-      const dateObjectFinalDate = new Date(finalDateTime);
+      const dateObjectFinalDate = new Date(initialDateTime);
+      dateObjectFinalDate.setHours(
+        dateObjectFinalDate.getHours() + duration[0]
+      );
       if (dateObjectInitialDate < tomorrow)
         return {
           statusCode: 400,
@@ -81,13 +84,13 @@ const putReservation = async (event, context) => {
       if (initialDateTime) {
         const dateObjectInitialDate = new Date(initialDateTime);
         if (dateObjectInitialDate < tomorrow)
-        return {
-          statusCode: 400,
-          body: JSON.stringify({
-            Error:
-              "La reservacion se debe hacer con minimo de 24 horas de anticipacion",
-          }),
-        };
+          return {
+            statusCode: 400,
+            body: JSON.stringify({
+              Error:
+                "La reservacion se debe hacer con minimo de 24 horas de anticipacion",
+            }),
+          };
 
         if (reservationToUpdate.finalDateTime < dateObjectInitialDate)
           return {
@@ -108,8 +111,9 @@ const putReservation = async (event, context) => {
 
         reservationToUpdate.initialDateTime = initialDateTime;
       }
-      if (finalDateTime) {
-        const dateObjectFinalDate = new Date(finalDateTime);
+      if (duration) {
+        const dateObjectFinalDate = new Date(reservationToUpdate.initialDateTime);
+        dateObjectFinalDate.setHours(dateObjectFinalDate.getHours() + duration[0]);
 
         const horaDeCierre = 20;
         if (dateObjectFinalDate.getHours() > horaDeCierre)
@@ -137,7 +141,7 @@ const putReservation = async (event, context) => {
             }),
           };
 
-        reservationToUpdate.finalDateTime = finalDateTime;
+        reservationToUpdate.duration = duration;
       }
     }
     await reservationToUpdate.save();
