@@ -19,6 +19,12 @@ provider:
       customAuthorizer:
         type: request
         functionName: testAuthorizer
+    cors:
+      allowedOrigins:
+        - https://rustika-front.vercel.app
+      allowedHeaders:
+        - Content-Type
+        - Authorization
 
 
 functions:
