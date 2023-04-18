@@ -13,7 +13,8 @@ const getDrinks = async (event) => {
     let params = {
         name: undefined,
         category: undefined,
-        subCategory: undefined
+        subCategory: undefined,
+        discount: undefined
     };
     let auxParams = {};
     // validaciones de params
