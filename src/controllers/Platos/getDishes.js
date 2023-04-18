@@ -1,5 +1,7 @@
 const { mongoConect } = require("../../config/db");
 const dish = require('../../models/Platos');
+const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 
 const getDishes = async (event) => {
     // paginado
@@ -73,4 +75,7 @@ const getDishes = async (event) => {
     }
 };
 
-module.exports = { getDishes };
+module.exports = { 
+    getDishes: middy(getDishes)
+        .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "GET"}))
+};

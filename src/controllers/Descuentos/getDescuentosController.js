@@ -1,5 +1,7 @@
 const discounts = require("../../models/Descuentos");
 const { mongoConect } = require("../../config/db");
+const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 
 const getDescuentos = async (event, context) => {
   mongoConect(process.env.MONGO_URI);
@@ -17,5 +19,6 @@ const getDescuentos = async (event, context) => {
   }
 };
 module.exports = {
-  getDescuentos,
+  getDescuentos: middy(getDescuentos)
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "GET"}))
 };

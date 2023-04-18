@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 const jsonBodyParser = require("@middy/http-json-body-parser");
 const { mongoConect } = require("../../config/db");
 mongoConect(process.env.MONGO_URI);
@@ -35,5 +36,7 @@ const createUser = async (event, context) => {
   }
 };
 module.exports = {
-  createUser: middy(createUser).use(jsonBodyParser()),
+  createUser: middy(createUser)
+    .use(jsonBodyParser())
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "POST"}))
 };

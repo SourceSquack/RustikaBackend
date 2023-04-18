@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 const jsonBodyParser = require("@middy/http-json-body-parser");
 mongoConect(process.env.MONGO_URI);
 
@@ -33,5 +34,7 @@ const deleteUser = async (event, context) => {
   }
 };
 module.exports = {
-  deleteUser: middy(deleteUser).use(jsonBodyParser()),
+  deleteUser: middy(deleteUser)
+    .use(jsonBodyParser())
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "DELETE"}))
 };

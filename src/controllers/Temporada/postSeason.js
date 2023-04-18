@@ -1,6 +1,7 @@
 const highSeason = require('../../models/Temporada');
 const { mongoConect } = require("../../config/db");
 const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 const jsonBodyParser = require("@middy/http-json-body-parser");
 
 Date.prototype.isValid = function () {
@@ -79,5 +80,7 @@ const postHighSeason = async (event) => {
 };
 
 module.exports = {
-    postHighSeason: middy(postHighSeason).use(jsonBodyParser()),
+    postHighSeason: middy(postHighSeason)
+        .use(jsonBodyParser())
+        .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "POST"}))
 };
