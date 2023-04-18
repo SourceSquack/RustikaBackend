@@ -60,7 +60,6 @@ const postOfertas = async (event, context) => {
     };
   try {
     const extencion = image.mimetype.split("/")[1]
-    console.log(`oferta${name}.${extencion}`);
     const uploadedImage = await uploadFile(
       `oferta${name}.${extencion}`,
       image.content,
@@ -68,6 +67,7 @@ const postOfertas = async (event, context) => {
     );
     //validacion de error
     const newOffer = await Offers.create({
+      name,
       image: uploadedImage.Location,
       initialDate: dateObjectInitialDate,
       finalDate: dateObjectFinalDate,

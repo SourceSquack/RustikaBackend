@@ -14,11 +14,37 @@ provider:
   apiGateway:
     binaryMediaTypes:
       - 'multipart/form-data'
-  environment:
-    MONGO_URI: ${env:MONGO_URI}
+  httpApi:
+    authorizers:
+      customAuthorizer:
+        type: request
+        functionName: testAuthorizer
 
 
 functions:
+########------------------------------Authorizer---------------------------- ###########
+  testAuthorizer:
+    handler: src/controllers/Authorization/authorizer.authorizer
+#######---------------------------------Loging------------------------------ ##########
+  login:
+    handler: src/controllers/Authorization/loginController.login
+    events:
+      - httpApi:
+          path: /login
+          method: post
+#######---------------------------------Users------------------------------ ##########
+  createUser:
+    handler: src/controllers/User/createUser.createUser
+    events:
+      - httpApi:
+          path: /user
+          method: post
+  deleteUser:
+    handler: src/controllers/User/deleteUser.deleteUser
+    events:
+      - httpApi:
+          path: /user
+          method: delete
 ########--------------------------------Platos------------------------------ ###########
   getDishes:
     handler: src/controllers/Platos/getDishes.getDishes
@@ -138,6 +164,8 @@ functions:
       - httpApi:
           path: /test
           method: post
+          authorizer:
+            name: customAuthorizer
 ########--------------------------------Reservas------------------------------ ###########
   getReservation:
     handler: src/controllers/Reservaciones/getReservaController.getReservation
@@ -188,3 +216,16 @@ functions:
       - httpApi:
           path: /temporada/{id}
           method: delete
+########--------------------------------TimeBased------------------------------ ###########
+  filterDates:
+    handler: src/controllers/TimeBasedControllers/expiredDates.filterExpiredDates
+    events:
+      - schedule: cron(5 5 * * ? *)
+  activeDiscounts:
+    handler: src/controllers/TimeBasedControllers/activateDiscounts.activate
+    events:
+      - schedule: cron(0 5 * * ? *)
+  deactiveDiscounts:
+    handler: src/controllers/TimeBasedControllers/deactivateDiscounts.deactivate
+    events:
+      - schedule: cron(0 5 * * ? *)
