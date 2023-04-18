@@ -4,6 +4,7 @@ const middy = require("@middy/core");
 const urlencodeParser = require("@middy/http-urlencode-body-parser");
 const jsonBodyParser = require("@middy/http-json-body-parser");
 const multiparDataParser = require("@middy/http-multipart-body-parser");
+const cors = require('@middy/http-cors');
 
 const deleteOfertas = async (event, context) => {
   mongoConect(process.env.MONGO_URI);
@@ -34,5 +35,6 @@ module.exports = {
   deleteOfertas: middy(deleteOfertas)
     .use(jsonBodyParser())
     .use(urlencodeParser())
-    .use(multiparDataParser()),
+    .use(multiparDataParser())
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "DELETE"}))
 };

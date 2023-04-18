@@ -43,5 +43,5 @@ const postTestImage = async (event, context) => {
 
 module.exports = { 
   postTestImage: middy(postTestImage)
-    .use(cors({origin: "https://rustika-front.vercel.app", methods: "POST"}))
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "POST"}))
 };

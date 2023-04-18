@@ -1,5 +1,7 @@
 const highSeason = require('../../models/Temporada');
 const { mongoConect } = require("../../config/db");
+const middy = require("@middy/core");
+const cors = require('@middy/http-cors');
 
 const deleteSeason = async (event) => {
     const {id} = event.pathParameters
@@ -27,4 +29,7 @@ const deleteSeason = async (event) => {
     }
 };
 
-module.exports = { deleteSeason }
+module.exports = { 
+    deleteSeason : middy(deleteSeason)
+    .use(cors({origins: ["https://rustika-front.vercel.app", "http://localhost:3000"], methods: "DELETE"})) 
+}
